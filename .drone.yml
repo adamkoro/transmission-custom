@@ -1,0 +1,17 @@
+kind: pipeline
+name: transmission
+type: kubernetes
+
+steps:
+  - name: build
+    image: plugins/kaniko
+    settings:
+      username:
+        from_secret: username
+      password:
+        from_secret: password
+      registry: harbor.adamkoro.com
+      repo: transmission/transmission
+      tags: 
+        - latest
+        - 4.0.3-combustion
