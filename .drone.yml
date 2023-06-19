@@ -11,7 +11,7 @@ steps:
       password:
         from_secret: harbor_password
       registry: harbor.adamkoro.com
-      repo: transmission/transmission
+      repo: harbor.adamkoro.com/transmission/transmission
       tags: 
         - latest
         - 4.0.3-combustion
