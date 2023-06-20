@@ -3,14 +3,10 @@ name: build
 type: kubernetes
 
 steps:
-  - name: build-multiarch
+  - name: multiarch
     image: gcr.io/kaniko-project/executor:v1.11.0
     commands:
       - /kaniko/executor
         --context "."
         --dockerfile "./Dockerfile"
         --destination "harbor.adamkoro.com/transmission/transmission:${DRONE_COMMIT_SHA}"
-      - manifest-tool push from-args
-        --platforms linux/amd64,linux/arm64
-        --template "harbor.adamkoro.com/transmission/transmission:${DRONE_COMMIT_SHA}"
-        --target "harbor.adamkoro.com/transmission/transmission:latest-test"
