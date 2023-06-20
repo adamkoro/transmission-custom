@@ -1,10 +1,10 @@
 kind: pipeline
-name: transmission
+name: build-arm64
 type: kubernetes
 
 steps:
   - name: build
-    image: plugins/kaniko
+    image: plugins/docker:1.7.5-linux-arm64-kaniko1.9.1
     settings:
       username:
         from_secret: harbor_username
@@ -12,6 +12,27 @@ steps:
         from_secret: harbor_password
       registry: harbor.adamkoro.com
       repo: harbor.adamkoro.com/transmission/transmission
+      platform: linux/amd64
+      tags: 
+        - latest
+        - 4.0.3-combustion
+        - ${DRONE_COMMIT_SHA}
+---
+kind: pipeline
+name: build-arm64
+type: kubernetes
+
+steps:
+  - name: build
+    image: plugins/docker:1.7.5-linux-amd64-kaniko1.9.1
+    settings:
+      username:
+        from_secret: harbor_username
+      password:
+        from_secret: harbor_password
+      registry: harbor.adamkoro.com
+      repo: harbor.adamkoro.com/transmission/transmission
+      platform: linux/amd64
       tags: 
         - latest
         - 4.0.3-combustion
