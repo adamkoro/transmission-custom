@@ -19,7 +19,7 @@ steps:
         - ${DRONE_COMMIT_SHA}
 ---
 kind: pipeline
-name: build-arm64
+name: build-amd64
 type: kubernetes
 
 steps:
