@@ -11,4 +11,3 @@ steps:
         --dockerfile "./Dockerfile"
         --destination "harbor.adamkoro.com/transmission/transmission:latest"
         --destination "harbor.adamkoro.com/transmission/transmission:4.0.3-combustion"
-        --build-arg opts="CGO_ENABLED=0 GOARCH=amd64"
