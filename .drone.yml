@@ -4,7 +4,7 @@ type: kubernetes
 
 steps:
   - name: build-amd64
-    image: gcr.io/kaniko-project/executor:v1.11.0
+    image: gcr.io/kaniko-project/executor:v1.12.0-debug
     commands:
       - /kaniko/executor
         --context "."
