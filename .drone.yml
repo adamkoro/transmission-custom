@@ -15,5 +15,5 @@ steps:
       - /kaniko/executor
         --context "."
         --dockerfile "./Dockerfile"
-        --destination "harbor.adamkoro.com/transmission/transmission:latest"
+        --destination "harbor.adamkoro.com/transmission/transmission:4.0.3-latest"
         --destination "harbor.adamkoro.com/transmission/transmission:4.0.3-combustion"
