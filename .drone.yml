@@ -3,10 +3,12 @@ name: build
 type: kubernetes
 
 steps:
-  - name: multiarch
+  - name: build-amd64
     image: gcr.io/kaniko-project/executor:v1.11.0
     commands:
       - /kaniko/executor
         --context "."
         --dockerfile "./Dockerfile"
-        --destination "harbor.adamkoro.com/transmission/transmission:${DRONE_COMMIT_SHA}"
+        --destination "harbor.adamkoro.com/transmission/transmission:latest"
+        --destination "harbor.adamkoro.com/transmission/transmission:4.0.3-combustion"
+        --build-arg opts="CGO_ENABLED=0 GOARCH=amd64"
