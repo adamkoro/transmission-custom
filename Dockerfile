@@ -8,7 +8,7 @@
 #    rm -rf Transmissionic-webui-v${VERSION}.zip
 
 # Combustion theme
-FROM harbor.adamkoro.com/bci/bci-base:15.4 as builder
+FROM harbor.adamkoro.com/bci/bci-base:15.5 as builder
 WORKDIR /transmission-web
 RUN zypper ref && zypper -n in unzip
 RUN curl -LO https://github.com/Secretmapper/combustion/archive/release.zip && \
