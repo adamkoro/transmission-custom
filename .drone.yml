@@ -7,11 +7,11 @@ steps:
     image: gcr.io/kaniko-project/executor:v1.12.0-debug
     environment:
       HARBOR_USERNAME:
-        from_secret: harbor_username
+        from_secret: registry_username
       HARBOR_PASSWORD:
-        from_secret: harbor_password
+        from_secret: registry_password
     commands:
-      -  echo "{\"auths\":{\"harbor.adamkoro.com\":{\"auth\":\"$(printf "%s:%s" "$HARBOR_USERNAME" "$HARBOR_PASSWORD" | base64 )\"}}}" > /kaniko/.docker/config.json
+      -  echo "{\"auths\":{\"registry.adamkoro.com\":{\"auth\":\"$(printf "%s:%s" "$HARBOR_USERNAME" "$HARBOR_PASSWORD" | base64 )\"}}}" > /kaniko/.docker/config.json
       - /kaniko/executor
         --context "."
         --dockerfile "./Dockerfile"
