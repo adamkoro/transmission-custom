@@ -22,6 +22,6 @@ steps:
       - /kaniko/executor
         --context "."
         --dockerfile "./Dockerfile"
-        --destination "harbor.adamkoro.com/transmission/transmission:4.0.3-latest"
-        --destination "harbor.adamkoro.com/transmission/transmission:4.0.3-combustion"
+        --destination "registry.adamkoro.com/transmission/transmission:4.0.3-latest"
+        --destination "registry.adamkoro.comtransmission/transmission:4.0.3-combustion"
         --build-arg opts="CGO_ENABLED=0 GOARCH=amd64"
