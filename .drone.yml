@@ -1,6 +1,13 @@
 kind: pipeline
 name: build
-type: kubernetes
+type: docker
+
+platform:
+  os: linux
+  arch: amd64
+
+node:
+  type: hosted-amd64
 
 steps:
   - name: build-amd64
