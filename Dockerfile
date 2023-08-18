@@ -17,6 +17,5 @@ RUN curl -LO https://github.com/Secretmapper/combustion/archive/release.zip && \
 
 
 FROM harbor.adamkoro.com/docker/linuxserver/transmission:4.0.3
-MAINTAINER Adamkoro <akoronics@protonmail.com>
 ENV TRANSMISSION_WEB_HOME=/usr/share/transmission/custom-web
 COPY --from=builder /transmission-web/combustion-release /usr/share/transmission/custom-web
