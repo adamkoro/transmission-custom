@@ -1,5 +1,5 @@
 kind: pipeline
-name: build
+name: combustion_theme_amd64
 type: docker
 
 platform:
@@ -10,7 +10,7 @@ node:
   type: hosted-amd64
 
 steps:
-  - name: build-amd64
+  - name: build
     image: gcr.io/kaniko-project/executor:v1.12.0-debug
     environment:
       HARBOR_USERNAME:
