@@ -45,7 +45,7 @@ steps:
 #        exclude:
 #          - "main"
 
-  - name: combustion build prod image
+  - name: prod image build and push 
     image: docker:dind
     environment:
       REGISTRY_USER:
@@ -66,13 +66,36 @@ steps:
       event: 
         - tag
 
+  - name: prod image export
+    image: docker:dind
+    environment:
+      REGISTRY_USER:
+        from_secret: docker_user
+      REGISTRY_PASSWORD:
+        from_secret: docker_pass
+    volumes:
+      - name: dockersock
+        path: /var/run/
+    commands:
+    - "docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD"
+    - "docker buildx create --use --name mybuilder"
+    - "docker buildx build --platform linux/amd64 -t adamkoro/transmission-custom:combustion-latest -t adamkoro/transmission-custom:combustion-${DRONE_TAG} . -f Dockerfile.combustion --build-arg TRANSMISSION_VERSION=$(cat ./VERSION) --output type:tar,dest=export/transmission-custom:combustion-${DRONE_TAG}.tar"
+    when:
+      branch:
+        include:
+        - "main"
+      event: 
+        - tag
+
   - name: combustion release
     image: plugins/github-release
     pull: always
     settings:
       api_key:
         from_secret: github_token
-      files: Dockerfile.combustion
+      files: 
+        - Dockerfile.combustion
+        - export/
       title: VERSION
       checksum:
         - sha512
