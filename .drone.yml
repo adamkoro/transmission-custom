@@ -56,6 +56,7 @@ steps:
       - name: dockersock
         path: /var/run/
     commands:
+    - "apk add tar"
     - "docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD"
     - "docker buildx create --use --name mybuilder"
     - "docker buildx build --platform linux/amd64 -t adamkoro/transmission-custom:combustion-latest -t adamkoro/transmission-custom:combustion-${DRONE_TAG} . --push -f Dockerfile.combustion --build-arg TRANSMISSION_VERSION=$(cat ./VERSION)"
@@ -91,7 +92,7 @@ steps:
 
 trigger:
   event:
-  - push
+  #- push
   - tag
 
 volumes:
