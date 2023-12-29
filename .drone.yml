@@ -59,7 +59,8 @@ steps:
     - "apk add tar"
     - "docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD"
     - "docker buildx create --use --name mybuilder"
-    - "docker buildx build --platform linux/amd64 -t adamkoro/transmission-custom:combustion-latest -t adamkoro/transmission-custom:combustion-${DRONE_TAG} . --push -f Dockerfile.combustion --build-arg TRANSMISSION_VERSION=$(cat ./VERSION)"
+    - "docker buildx build --platform linux/amd64 -t adamkoro/transmission-custom:combustion-latest -t adamkoro/transmission-custom:combustion-${DRONE_TAG} . -f Dockerfile.combustion --build-arg TRANSMISSION_VERSION=$(cat ./VERSION)"
+    - "docker push adamkoro/transmission-custom:combustion-latest adamkoro/transmission-custom:combustion-${DRONE_TAG}"
     - "mkdir images"
     - "docker save -o images/transmission-custom:combustion-${DRONE_TAG}.tar adamkoro/transmission-custom:combustion-${DRONE_TAG}"
     when:
