@@ -6,5 +6,5 @@
 
 ## Docker images
 
-`adamkoro/transmission-custom:combustion`
-`adamkoro/transmission-custom:combustion-4.0.5`
+- `adamkoro/transmission-custom:combustion`
+- `adamkoro/transmission-custom:combustion-4.0.5`
