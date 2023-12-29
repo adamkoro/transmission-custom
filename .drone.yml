@@ -45,7 +45,7 @@ steps:
 #        exclude:
 #          - "main"
 
-  - name: build prod image
+  - name: combustion build prod image
     image: docker:dind
     environment:
       REGISTRY_USER:
@@ -58,7 +58,7 @@ steps:
     commands:
     - "docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD"
     - "docker buildx create --use --name mybuilder"
-    - "docker buildx build --platform linux/amd64 -t adamkoro/transmission-custom:${DRONE_COMMIT_SHA:0:7} -t adamkoro/transmission-custom:latest -t adamkoro/transmission-custom:${DRONE_TAG} . --push -f Dockerfile --build-arg TRANSMISSION_VERSION=$(cat ./version)"
+    - "docker buildx build --platform linux/amd64 -t adamkoro/transmission-custom:combustion-latest -t adamkoro/transmission-custom:combustion-${DRONE_TAG} . --push -f Dockerfile.combustion --build-arg TRANSMISSION_VERSION=$(cat ./version)"
     when:
       branch:
         include:
