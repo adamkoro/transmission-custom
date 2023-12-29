@@ -66,6 +66,25 @@ steps:
       event: 
         - tag
 
+  - name: combustion release
+    image: plugins/github-release
+    pull: always
+    settings:
+      api_key:
+        from_secret: github_token
+      files: Dockerfile.combustion
+      title: VERSION
+      checksum:
+        - sha512
+      note: CHANGELOG.md
+      overwrite: true
+    when:
+      branch:
+        include:
+        - "main"
+      event: 
+        - tag
+
 trigger:
   event:
   - push
