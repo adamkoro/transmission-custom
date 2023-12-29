@@ -1,6 +1,6 @@
 kind: pipeline
-name: combustion_theme_amd64
 type: docker
+name: transmission custom
 
 platform:
   os: linux
@@ -9,19 +9,68 @@ platform:
 node:
   type: hosted-amd64
 
+services:
+  - name: docker service
+    image: docker:dind
+    privileged: true
+    volumes:
+      - name: dockersock
+        path: /var/run/
+
 steps:
-  - name: build
-    image: gcr.io/kaniko-project/executor:v1.14.0-debug
-    environment:
-      REGISTRY_USERNAME:
-        from_secret: registry_user
-      REGISTRY_PASSWORD:
-        from_secret: registry_password
+  - name: wait for docker service
+    image: docker:dind
+    volumes:
+      - name: dockersock
+        path: /var/run/
     commands:
-      -  echo "{\"auths\":{\"registry.adamkoro.com\":{\"auth\":\"$(printf "%s:%s" "$REGISTRY_USERNAME" "$REGISTRY_PASSWORD" | base64 )\"}}}" > /kaniko/.docker/config.json
-      - /kaniko/executor
-        --context "."
-        --dockerfile "./Dockerfile"
-        --destination "registry.adamkoro.com/transmission/transmission:4.0.3-combustion-latest"
-        --destination "registry.adamkoro.com/transmission/transmission:4.0.3-combustion"
-        --build-arg opts="CGO_ENABLED=0 GOARCH=amd64"
+    - while true; do docker info > /dev/null 2>&1 && echo "Docker server up" && break || (echo "Docker server down. Retrying..." && sleep 1); done
+
+#  - name: build dev image
+#    image: docker:dind
+#    environment:
+#      REGISTRY_USER:
+#        from_secret: registry_user
+#      REGISTRY_PASSWORD:
+#        from_secret: registry_password
+#    volumes:
+#      - name: dockersock
+#        path: /var/run/
+#    commands:
+#    - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD registry.adamkoro.com
+#    - docker buildx create --use --name mybuilder
+#    - docker buildx build --platform linux/amd64 -t registry.adamkoro.com/docker-volume-backup/${DRONE_BRANCH}/docker-volume-backup:${DRONE_COMMIT_SHA:0:7} -t registry.adamkoro.com/docker-volume-backup/${DRONE_BRANCH}/docker-volume-backup:latest . --push -f Dockerfile
+#    when:
+#      branch: 
+#        exclude:
+#          - "main"
+
+  - name: build prod image
+    image: docker:dind
+    environment:
+      REGISTRY_USER:
+        from_secret: docker_user
+      REGISTRY_PASSWORD:
+        from_secret: docker_pass
+    volumes:
+      - name: dockersock
+        path: /var/run/
+    commands:
+    - "docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD"
+    - "docker buildx create --use --name mybuilder"
+    - "docker buildx build --platform linux/amd64 -t adamkoro/transmission-custom:${DRONE_COMMIT_SHA:0:7} -t adamkoro/transmission-custom:latest -t adamkoro/transmission-custom:${DRONE_TAG} . --push -f Dockerfile --build-arg TRANSMISSION_VERSION=$(cat ./version)"
+    when:
+      branch:
+        include:
+        - "main"
+      event: 
+        - tag
+
+trigger:
+  event:
+  - push
+  - tag
+
+volumes:
+  - name: dockersock
+    temp: {}
