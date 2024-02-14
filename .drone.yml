@@ -7,7 +7,7 @@ platform:
   arch: amd64
 
 node:
-  type: hosted-amd64
+  type: kubernetes-amd64
 
 services:
   - name: docker service
